@@ -1,6 +1,7 @@
 import streamlit as st  
 import os
 import requests  
+
 from crewai import Agent, Task, Crew, Process, LLM
 from dotenv import load_dotenv
 
@@ -35,7 +36,6 @@ if st.button("Submit"):
                     requests.post(n8n_url, json={"user_message": user_msg, "status": "Started"})
                 except Exception:
                     pass  
-                -
 
                 agent1 = Agent(
                     role="Emotion Detector",
@@ -72,7 +72,6 @@ if st.button("Submit"):
                     verbose=False
                 )
 
-                
                 bot_crew.kickoff()
 
                 try:
@@ -84,7 +83,7 @@ if st.button("Submit"):
                     })
                 except Exception:
                     pass
-               
+                
 
                 st.subheader("Results:")
                 st.write("**Detected Emotion:**")
