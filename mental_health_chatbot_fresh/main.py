@@ -1,15 +1,15 @@
 import streamlit as st  
 import os
+import requests  
 from crewai import Agent, Task, Crew, Process, LLM
 from dotenv import load_dotenv
-
 
 load_dotenv()
 
 my_key = os.getenv("GEMINI_API_KEY")
 
 st.title("Mental Health Chatbot")
-st.write("Project created using CrewAI and Gemini LLM")
+st.write("Project created using CrewAI and Gemini LLM (Connected to n8n)")
 
 if not my_key:
     st.warning("Please add your GEMINI_API_KEY in the .env file to run the app.")
@@ -27,9 +27,16 @@ if st.button("Submit"):
     if user_msg == "":
         st.write("Please write something first.")
     else:
-        with st.spinner("Processing..."):
+        with st.spinner("Processing through CrewAI and logging to n8n..."):
             try:
-               
+                
+                try:
+                    n8n_url = "http://localhost:5678/webhook/mental-health-flow"
+                    requests.post(n8n_url, json={"user_message": user_msg, "status": "Started"})
+                except Exception:
+                    pass  
+                -
+
                 agent1 = Agent(
                     role="Emotion Detector",
                     goal="Find the main emotion from user text. Give answer in one word with emoji.",
@@ -46,7 +53,6 @@ if st.button("Submit"):
                     verbose=False
                 )
 
-             
                 t1 = Task(
                     description=f"Find emotion: {user_msg}",
                     expected_output="One word emotion name like Sad, Happy, Angry etc with emoji.",
@@ -59,7 +65,6 @@ if st.button("Submit"):
                     agent=agent2
                 )
 
-               
                 bot_crew = Crew(
                     agents=[agent1, agent2],
                     tasks=[t1, t2],
@@ -67,11 +72,21 @@ if st.button("Submit"):
                     verbose=False
                 )
 
+                
                 bot_crew.kickoff()
 
+                try:
+                    requests.post(n8n_url, json={
+                        "user_message": user_msg,
+                        "detected_emotion": t1.output.raw,
+                        "supportive_response": t2.output.raw,
+                        "status": "Completed"
+                    })
+                except Exception:
+                    pass
                
+
                 st.subheader("Results:")
-                
                 st.write("**Detected Emotion:**")
                 st.info(t1.output.raw)
                 
