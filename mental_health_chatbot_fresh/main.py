@@ -32,7 +32,7 @@ if st.button("Submit"):
             try:
                 
                 try:
-                    n8n_url = "http://localhost:5678/webhook/mental-health-flow"
+                    n8n_url = "https://mayankchoudhary.app.n8n.cloud/webhook-test/mental-health-flow"
                     requests.post(n8n_url, json={"user_message": user_msg, "status": "Started"})
                 except Exception:
                     pass  
