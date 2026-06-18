@@ -18,7 +18,7 @@ if not my_key:
 
 
 my_llm = LLM(
-    model="gemini/gemini-2.5-flash",
+    model="gemini/gemini-2.5-flash-lite",
     api_key=my_key
 )
 
@@ -32,7 +32,7 @@ if st.button("Submit"):
             try:
                 
                 try:
-                    n8n_url = "https://mayankchoudhary.app.n8n.cloud/webhook-test/mental-health-flow"
+                    n8n_url = "https://mayankchoudhary.app.n8n.cloud/webhook/mental-health-workflow"
                     requests.post(n8n_url, json={"user_message": user_msg, "status": "Started"})
                 except Exception:
                     pass  
