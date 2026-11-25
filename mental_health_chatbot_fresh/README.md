@@ -6,7 +6,7 @@ An AI-powered Multi-Agent Mental Health Chatbot built using **CrewAI** and **Gem
 - **Emotion Detector Agent:** Analyzes the user's input message to instantly identify their mood or underlying emotion (outputs one word with an emoji).
 - **Support Agent:** Acts as a compassionate, kind counselor to provide supportive lines and guidance based on the user's problem.
 
-## 🛠️ Tech Stack
+##  Tech Stack
 - **Frontend UI:** Streamlit
 - **Multi-Agent Framework:** CrewAI
 - **LLM Backend:** Gemini 2.5 Flash (configured via LiteLLM)
